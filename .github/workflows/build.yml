@@ -46,16 +46,11 @@ jobs:
         
       - name: update the manifest with new image
         env:
-          GH_TOKEN: ${{ secrets.LEANSPACE_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_PAT }}
           IMAGE_NAME: ${{ format('{0}.dkr.ecr.{1}.amazonaws.com/asset-repository-kubernetes:0.1.870_1_57b4ae', secrets.ACCOUNT_ID, secrets.AWS_REGION )}}
         run: |
           sed -i 's|image: ${{ steps.login-ecr.outputs.registry }}/asset-repository-kubernetes:.*|image: ${{ steps.login-ecr.outputs.registry }}/asset-repository-kubernetes:0.1.870_1_57b4ae|g' manifests/deployment.yaml
           git add manifests/deployment.yaml
           git commit -am " Updated manifest with the the latest release " --allow-empty
           git pull --rebase
-
-      - name: Push changes
-        env:
-            GITHUB_TOKEN: ${{ secrets.ACTIONS_PAT }}
-        run: |
-            git push origin main
+          git push origin main
