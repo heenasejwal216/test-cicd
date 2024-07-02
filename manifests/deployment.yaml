@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+  generation: 2
+  labels:
+    app: assets-repository
+  name: assets-repository
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: assets-repository
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: assets-repository
+    spec:
+      containers:
+      - image: 603457443348.dkr.ecr.eu-central-1.amazonaws.com/asset-repository-kubernetes:latest
+        imagePullPolicy: Always
+        name: assets-repository
+        env: 
+        - name: AWS_REGION
+          value: eu-central-1
+        - name: io.leanspace.starters.aws.enabled
+          value: "false"
+        - name: io.leanspace.starters.config.sm.enabled
+          value: "false"
+        - name: io.leanspace.starters.config.ssm.enabled
+          value: "false"
+        - name: io.leanspace.starters.config.vault.api-key
+          value: 00000000-0000-0000-0000-000000000000
+        - name: io.leanspace.starters.config.vault.enabled
+          value: "true"
+        - name: io.leanspace.starters.config.vault.url
+          value: http://vault:8200
+        - name: io.leanspace.starters.logging.compressed-stack-trace
+          value: "false"
+        - name: io.leanspace.starters.logging.logs-appender
+          value: PLAIN
+        - name: io.leanspace.starters.messagebus.binders.kafka.url
+          value: http://kafka-0.kafka-headless.assets-repository.svc.cluster.local:9092
+        - name: io.leanspace.starters.notifications.mode
+          value: kafka
+        - name: io.leanspace.starters.usage-metrics.enabled
+          value: "false"
+        - name: io.leanspace.teams-repository.url
+          value: https://api.develop.leanspace.io/teams-repository
+        - name: logging.level.io.leanspace
+          value: TRACE
+        - name: spring.datasource.type
+          value: com.zaxxer.hikari.HikariDataSource  
+      imagePullSecrets:
+        - name: regcred    
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+
+
