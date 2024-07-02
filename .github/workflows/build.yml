@@ -2,8 +2,6 @@ name: Build the service and deploy to k8s
 on: push
   
 jobs:
-  check-jira-reference:
-    uses: leanspace/workflows/.github/workflows/commit-message-check.yml@v2
   version-identifier:
     runs-on: ubuntu-latest
     steps:
