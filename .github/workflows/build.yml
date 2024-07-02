@@ -54,4 +54,4 @@ jobs:
           git add manifests/deployment.yaml
           git commit -am " Updated manifest with the the latest release " --allow-empty
           git pull --rebase
-          git push origin main
+          git push
