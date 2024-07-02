@@ -39,8 +39,8 @@ jobs:
           IMAGE_NAME: ${{ format('{0}.dkr.ecr.{1}.amazonaws.com/asset-repository-kubernetes:0.1.870_1_57b4ae', secrets.ACCOUNT_ID, secrets.AWS_REGION )}}
         run: |
           sed -i 's|image: ${{ steps.login-ecr.outputs.registry }}/asset-repository-kubernetes:.*|image: ${{ steps.login-ecr.outputs.registry }}/asset-repository-kubernetes:0.1.870_1_57b4ae|g' manifests/deployment.yaml
-          git config --global user.name 'leanspace-bot'
-          git config --global user.email 'leanspace-bot@users.noreply.github.com'
+          git config --global user.name 'heenasejwal216'
+          git config --global user.email 'heena@leanspace.io'
           git commit -am " Updated manifest with the the latest release " --allow-empty
           git pull --rebase
           git push
