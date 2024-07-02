@@ -27,6 +27,7 @@ jobs:
         with:
             persist-credentials: false
             repository: heenasejwal216/test-cicd.git
+            ref: main
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
