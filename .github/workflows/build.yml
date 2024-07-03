@@ -41,15 +41,13 @@ jobs:
         with:
           registry: ${{ format('{0}.dkr.ecr.{1}.amazonaws.com', secrets.ACCOUNT_ID, secrets.AWS_REGION) }}  
 
-      - name: Set up Git
-        run: |
-            git config --global user.name 'heenasejwal216'
-            git config --global user.email 'heena@leanspace.io'
         
       - name: update the manifest with new image
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_PAT }}
         run: |
+          git config --global user.name 'heenasejwal216'
+          git config --global user.email 'heena@leanspace.io'
           sed -i 's|image: ${{ steps.login-ecr.outputs.registry }}/asset-repository-kubernetes:.*|image: ${{ steps.login-ecr.outputs.registry }}/asset-repository-kubernetes:0.1.870_1_57b4ae|g' manifests/deployment.yaml
           git add manifests/deployment.yaml
           git commit -am " Updated manifest with the the latest release " --allow-empty
